@@ -1,0 +1,262 @@
+/* Navigation Bar */
+.button-collapse {
+	margin-left: -20px;
+}
+
+.cardform-error {
+	color: #e53935;
+}
+
+.alert_flag {
+	padding-top: 15px !important;
+}
+
+/* Login Panel */
+.login-panel {
+	padding-top: 45px !important;
+	margin-top: 10%;
+	padding-bottom: 2% !important;
+
+}
+
+.login-panel .logo {
+	width: 65%;
+	padding-bottom: 10px;
+}
+
+.login-panel .input-field {
+	margin-top: 20px;
+}
+
+.login-panel .btn {
+	margin-top: 25px;
+	width: 75%;
+}
+
+/* Signup Panel */
+.signup-panel {
+	padding-top: 18px !important;
+	margin-top: 10%;
+	padding-left: 5% !important;
+	padding-right: 5% !important;
+
+}
+
+.signup-panel .logo_micro {
+	width: 40%;
+	padding-bottom: 10px;
+}
+
+.signup-panel .btn {
+	margin-top: 5px;
+	width: 80%;
+}
+
+.disclaimer {
+	color: white;
+	font-size: 13px;
+}
+
+.disclaimer a {
+	color: white;
+	text-decoration: underline;
+}
+
+/* Navigation Bar */
+.nav .brand-text {
+	float: left;
+	padding-top: -5px !important;
+}
+
+#user_dropdown {
+	margin-top: 65px;
+}
+
+#notification_dropdown {
+	overflow-y: none !important;
+	width: 210px;
+	margin-top: 65px;
+	height: none !important;
+}
+
+#notification_dropdown li {
+	padding: 10px;
+	font-size: 15px;
+}
+
+.brand-logo:hover {
+	cursor: pointer;
+}
+
+/* Dashboard */
+.db_header {
+	padding-top: 30px;
+
+}
+
+.db_header .title {
+	font-size: 35px;
+}
+
+.owl-item {
+	padding: 0 3px;
+}
+
+.cat-panel {
+	padding: 20px !important;
+	width: 100%;
+	height: 60px;
+	line-height: 20px;
+}
+
+/* User Profile */
+.no-profile-card {
+	padding-bottom: 15px !important;
+}
+.no-profile {
+	padding: 15px !important;
+}
+.profile-container {
+	width: 100%;
+}
+
+.profile-container .profile-header {
+	width: 100%;
+	min-height: 250px;
+	z-index: -10;
+}
+
+.profile-container .name {
+	padding-top: 175px;
+	color: white;
+	font-size: 2.0em;
+	display: block;
+	float: left;
+}
+
+.profile-container .sub_title {
+	padding-top: 175px;
+	color: white;
+	font-size: 0.75em;
+}
+
+.profile-header .btn-floating {
+	float: right;
+}
+
+.profile-content {
+	margin-top: 70px;
+}
+
+.profile-content .card-title {
+	color: black;
+	size: 25px !important;
+}
+
+.day_available_header {
+	margin-top: 20px;
+	padding-bottom: 7px;
+	font-size: 0.9em;
+}
+
+.day_available {
+	padding-bottom: 60px
+}
+
+.day_available .day {
+	font-size: 1em;
+	font-weight: lighter;
+	min-width: 11%;
+	max-height: 26%;
+	margin-right: 2.0%;
+	padding: 2px;
+    display: block;
+	text-align: center;
+	float: left;
+	color: white;
+}
+
+.day_available .available {
+	background: #70cb64;
+}
+
+.day_available .navailable {
+	background: #e14d4f;
+}
+
+.avail {
+	table-layout: fixed;
+	text-align: center;
+	margin-top: 15px !important;
+}
+
+.avail td {
+	text-align: center;
+	border: 5px solid #f5f5f5;
+}
+
+.avail .available {
+	background: #70cb64;
+}
+
+.avail .navailable {
+	background: #e14d4f;
+}
+
+/* Cards */
+.card {
+	padding-bottom: 10px;
+}
+
+.card .card-append {
+	border-top: 1px solid rgba(160, 160, 160, 0.2);
+	padding-top: 5px;
+	padding-left: 5px;
+	font-size: 1.0em;
+}
+
+.card p {
+	margin-top: 0.7em;
+	margin-bottom: 0.5em;
+}
+
+.category_name {
+	text-transform: uppercase;
+	font-weight: light;
+	margin-top: 30px;
+	font-size: 25px;
+}
+
+.category_result .col {
+	padding: 0 0.2em !important;
+}
+
+.category_result .card-content {
+	padding: 10px;
+}
+
+.category_result .votes {
+	width: 100%;
+	display: block;
+}
+
+.category_result .card-title {
+	font-size: 18px;
+}
+
+.card_detail .dt_head {
+	font-size: 12px;
+	margin: 3px 0;
+	color: #9e9e9e;
+	width: 100%;
+	display: block;
+}
+
+.category_result .validate {
+	height: 2rem !important;
+}
+
+/* Courses */
+.course_container {
+	padding-top: 30px;
+}

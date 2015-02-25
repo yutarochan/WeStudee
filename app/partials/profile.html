@@ -1,0 +1,83 @@
+<div ng-include="'partials/navbar.html'"></div>
+
+<div>
+    <!-- Profile Header -->
+    <div class="profile-container">
+        <div class="profile-header" style="background-image: url('img/app/profile_cover.png'); background-repeat: none;">
+            <div class="container"><div class="name">{{ user.get("first_name") }} {{ user.get("last_name") }}</div></div>
+        </div>
+        <div class="container"><a href="?#/profile_edit" onclick="goto('profile_edit')" class="btn-floating btn-large waves-effect waves-light red header-icon" style="float: right;margin-top: -28px;"><i class="mdi-editor-mode-edit"></i></a></div>
+    </div>
+
+    <!-- Profile Contents -->
+    <div class="container profile-content">
+        <div class="row">
+            <!-- Profile Card -->
+            <div class="col s12 m12">
+                <div class="card grey lighten-4" ng-show="usrprofile">
+                    <div class="card-content">
+                        <div class="">
+                            <span class="card-title">About</span>
+                            <p>{{ usrprofile.get("about") }}</p>
+                        </div>
+                    </div>
+                    <div class="card-append">
+                        <div class="col s12 m6"><p><b>School: </b>{{ usrprofile_school.get("schoolName") }}</p></div>
+                        <div class="col s12 m6"><p><b>Major: </b>{{ usrprofile.get("major") }}</p></div>
+
+                        <div class="col s12 m6"><p><b>Location: </b>{{ usrprofile_school.get("city") }}, {{ usrprofile_school.get("state") }}</p></div>
+                        <!-- <div class="col s12 m6"><p><b>Language: </b></p></div>-->
+                        <div class="col s12 m12"><p><b>Preferred Email: </b>{{ usrprofile.get("prefEmail") }}</p></div>
+                    </div>
+                </div>
+
+                <!-- No Profile Alert -->
+                <div class="card light-blue lighten-4 no-profile-card" ng-show="!usrprofile">
+                    <div class="card-content no-profile">
+                        <span class="card-title">You don't have a profile yet...</span>
+                        <p>Start building your profile to start finding better study partners.</p><br>
+                        <a onclick="goto('profile_edit')" class="waves-effect waves-light btn center white-text blue darken-2 right"><i class="mdi-content-create left"></i>Create Profile</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="col s12 m6">
+                <div class="card grey lighten-4">
+                    <div class="card-content">
+                        <span class="card-title">Availability</span>
+                        <table class="avail"><tbody>
+                            <tr>
+                                <!-- TODO: Truncate this into a more consisce function -->
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[0])}}">S</td>
+                                <td ng-class="(usrprofile.get('availability')[1] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[1])}}">M</td>
+                                <td ng-class="(usrprofile.get('availability')[2] != '0') ? 'available' : 'navailable'" class="tt " data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[2])}}">T</td>
+                                <td ng-class="(usrprofile.get('availability')[3] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[3])}}">W</td>
+                                <td ng-class="(usrprofile.get('availability')[4] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[4])}}">T</td>
+                                <td ng-class="(usrprofile.get('availability')[5] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[5])}}">F</td>
+                                <td ng-class="(usrprofile.get('availability')[6] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="{{getTooltip(usrprofile.get('availability')[6])}}">S</td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course List -->
+            <div class="col s12 m6">
+                 <div class="card grey lighten-4">
+                    <div class="card-content">
+                        <div class="">
+                            <span class="card-title">Courses</span>   <a href="" class="blue-text" ng-click="gotoEdit()">Edit</a>
+                            <ul id="courses" class="collection">
+                                <li class='collection-item' ng-show="usrprofile.get('courseList').length == 0">You currently are not signed up for any courses!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script> $(document).ready(function(){ $('.tt').tooltip({"delay": 25}); }); </script>

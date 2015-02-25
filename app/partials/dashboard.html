@@ -1,0 +1,122 @@
+<div ng-include="'partials/navbar.html'"></div>
+<div class="container" ng-controller="DashboardCtrl">
+    <!--
+    <div class="col s12 m12 alert_flag"><div class="card-panel red lighten-3">
+        <span>You have not confirmed your email account yet. <a href="">Send</a> confirmation again.</span>
+    </div></div>
+    <div class="col s12 m12 alert_flag"><div class="card-panel light-blue lighten-1">
+    <span>It seems that your profile is incomplete. <a class="white-text" href="">Get started</a> by filling out some details on your dashboard to begin using WeStudee!</span>
+	div></div>
+    -->
+
+    <div class="row db_header">
+        <div class="col l8 m12"><div class="title">My Courses</div></div>
+        <div class="col l4 m12">
+        </div>
+    </div>
+
+    <!--
+    <div class="row category_result">
+        <div class="col l3 m12">
+            <div class="card">
+                <div class="card-image waves-effect waves-block waves-light"><img class="activator" src="img/app/profile_cover.png"></div>
+                <div class="card-content">
+                    <span class="card-title activator"><a class="blue-text" href="#">John Smith</a><i class="mdi-navigation-more-vert right grey-text text-darken-4"></i></span>
+                    <p>0 VOTES</p>
+                </div>
+                <div class="card-reveal card_detail">
+                    <span class="card-title grey-text text-darken-4">John Smith <i class="mdi-navigation-close right"></i></span>
+                    <p><b>[School Name Here]</b></p>
+                    <p>[Major Goes Here]</p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!--
+    TODO:
+    - Work on adding color variety to the accordion interfaces.
+    -->
+
+    <!-- TODO: Display for if user does not have any courses under their belt!
+    <div class="row center">
+        <h5>You don't have any courses yet!</h5>
+    </div> -->
+
+    <div class="row category_result">
+        <ul id="course_list" class="collapsible z-depth-1" data-collapsible="accordion">
+
+            <!--
+            <li ng-repeat="c in course">
+                <div class="collapsible-header white-text red lighten-2">{{c.name}}</div>
+                <div class="collapsible-body grey lighten-3">
+
+                    <div class="row"  style="padding: 0 24px;">
+
+                        <div class="col l4 m12">
+                            <div class="card z-depth-1">
+                                <div class="card-image waves-effect waves-block waves-light"><img class="activator" src="img/app/profile_cover.png"></div>
+                                <div class="card-content">
+                                    <span class="card-title activator"><a class="blue-text" href="#">John Smith</a><i class="mdi-navigation-more-vert right grey-text text-darken-4"></i></span>
+                                    <span class="votes">0 VOTES</span>
+                                </div>
+                                <div class="card-reveal card_detail">
+                                    <span class="card-title grey-text text-darken-4">John Smith <i class="mdi-navigation-close right"></i></span>
+                                    <span class="dt_head"><b>[School Name Here]</b></span>
+                                    <span class="dt_head">[Major Goes Here]</span>
+
+                                    <div class="day_available_header">Available:</div>
+                                    <div class="day_available text-center">
+                                        <div class="day available" data-toggle="tooltip" data-placement="bottom" title="Afternoon">Su</div>
+                                        <div class="day navailable">M</div>
+                                        <div class="day navailable">T</div>
+                                        <div class="day available" data-toggle="tooltip" data-placement="bottom" title="Morning, Evening">W</div>
+                                        <div class="day available" data-toggle="tooltip" data-placement="bottom" title="Afternoon">Th</div>
+                                        <div class="day navailable">F</div>
+                                        <div class="day available" data-toggle="tooltip" data-placement="bottom" title="Midnight">Sa</div>
+                                    </div>
+                                    <a class="waves-effect waves-light btn white-text blue lighten-1"><i class="mdi-content-send"></i> Send Request</a></center>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </li>
+        -->
+            <!--
+            <li>
+                <div class="collapsible-header white-text red lighten-2">Course 1</div>
+                <div class="collapsible-body grey lighten-3">
+                        <div class="row"  style="padding: 0 24px;">
+                            <div class="col l3 m12">
+                                <div class="card z-depth-1">
+                                    <div class="card-image waves-effect waves-block waves-light"><img class="activator" src="img/app/profile_cover.png"></div>
+                                    <div class="card-content">
+                                        <span class="card-title activator"><a class="blue-text" href="#">John Smith</a><i class="mdi-navigation-more-vert right grey-text text-darken-4"></i></span>
+                                        <span class="votes">0 VOTES</span>
+                                    </div>
+                                    <div class="card-reveal card_detail">
+                                        <span class="card-title grey-text text-darken-4">John Smith <i class="mdi-navigation-close right"></i></span>
+                                        <span class="dt_head"><b>[School Name Here]</b></span>
+                                        <span class="dt_head">[Major Goes Here]</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header white-text pink lighten-2">Second</div>
+                <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+            </li>
+            <li>
+                <div class="collapsible-header white-text purple lighten-2">Third</div>
+                <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+            </li> -->
+        </ul>
+    </div>
+</div>
+
+<script> $(document).ready(function(){ $('.collapsible').collapsible({ accordion : false }); $('.tt').tooltip({"delay": 25}); });</script>

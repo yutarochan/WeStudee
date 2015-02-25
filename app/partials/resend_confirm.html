@@ -1,0 +1,25 @@
+<style> body { background: #81d4fa;} </style>
+<div class="container">
+    <div class="row">
+        <div class="col l4 center offset-l4 z-depth-1 login-panel grey lighten-5">
+            <a href=""><img class="logo" src="img/app/westudee_logo_black.png"></a>
+            <form class="row">
+                <p class="center">Another confirmation email has been sent to your account. Please confirm your account through the link.</p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var prev_mail = Parse.User.current().get("email");
+    Parse.User.current().set("email", Math.floor((Math.random() * 10000) + 1)+"@mail.com");
+    Parse.User.current().save(null, {
+        success: function(gameScore) {},
+        error: function(gameScore, error) {}
+    });
+    Parse.User.current().set("email", prev_mail);
+    Parse.User.current().save(null, {
+        success: function(gameScore) {},
+        error: function(gameScore, error) {}
+    });
+</script>

@@ -1,0 +1,19 @@
+<style> body { background: #81d4fa;} </style>
+<div class="container" ng-controller="ForgotCtrl">
+    <div class="row">
+        <div class="col l4 center offset-l4 z-depth-1 login-panel grey lighten-5">
+            <a href=""><img class="logo" src="img/app/westudee_logo_black.png"></a>
+
+            <div class="cardform-error"></div>
+
+            <form class="row forgot-form">
+                <p class="center">Enter your email to reset your password.</p>
+
+                <div class="input-field col s10 offset-s1">
+                    <input  ng-model="email" class="validate email" id="email" type="text"/> <label for="email">Email Address</label>
+                </div>
+                <button ng-click="submit()" class="btn waves-effect waves-light btn-large green" name="action" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

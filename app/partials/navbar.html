@@ -1,0 +1,31 @@
+<nav ng-controller="NavigationCtrl">
+    <ul id="user_dropdown" class="dropdown-content notif_dp">
+        <li><a href="?#/profile" onclick="goto('profile')">Profile</a></li>
+        <!--<li><a href="#!">Settings</a></li> TODO: Create a settings page and redirect user to that! -->
+        <li><a href="#/logout">Logout</a></li>
+    </ul>
+
+    <ul id="notification_dropdown" class="dropdown-content" ng-click="test()">
+        <li class="center">You have no new notifications right now.</li>
+    </ul>
+
+	<div class="nav-wrapper grey darken-3">
+    	<div class="container">
+        	<a onclick="goto('/')" class="brand-logo">
+            	<img src="img/app/westudee_logo_white.png" height="80%" style="padding-top: 10px;">
+            </a>
+            <ul id="nav-mobile" class="right side-nav">
+            	<li><a id="notif_dp" href="" data-activates="notification_dropdown" ng-click="akNotif()"><i id="notif" class="mdi-social-notifications-none small" style="font-size: 20px"></i></a></li>
+                <li><a href="" ng-click="akMessage()"><i id="msg" class="mdi-communication-email small" style="font-size: 20px"></i></a></li>
+                <li><a data-activates="user_dropdown" id="ws_name" href="">{{ user.get("first_name") }} {{ user.get("last_name") }} <span class='mdi-navigation-arrow-drop-down' /></li></a>
+			</ul>
+            <!-- TODO: Add a custom Javascript to activate drawer functions for mobile sites -->
+			<a class="button-collapse" data-activates="nav-mobile" ng-click="akNotif()"><i id="mobile-nav" class="mdi-navigation-menu"></i></a>
+		</div>
+    </div>
+</nav>
+
+<script>
+    $("#ws_name").dropdown({ hover: false });
+    $("#notif_dp").dropdown({ hover: false, constrain_width: false });
+</script>

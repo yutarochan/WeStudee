@@ -1,0 +1,113 @@
+<div ng-include="'partials/navbar.html'"></div>
+
+<div>
+    <!-- Profile Header -->
+    <div class="profile-container">
+        <div class="profile-header" style="background-image: url('img/app/profile_cover.png'); background-repeat: none;">
+            <div class="container"><div class="name">{{ user.get("first_name") }} {{ user.get("last_name") }}</div></div>
+        </div>
+        <div class="container"><a ng-click="updateProfile()" class="btn-floating btn-large waves-effect waves-light red header-icon" style="float: right;margin-top: -28px;"><i class="mdi-navigation-check"></i></a></div>
+    </div>
+
+    <!-- Profile Contents -->
+    <div class="container profile-content">
+        <div class="row">
+            <!-- Profile Card -->
+            <div class="col s12 m12">
+                <div class="card grey lighten-4">
+                    <div class="card-content">
+                        <div class="">
+                            <label for="textarea1">About</label>
+                            <textarea id="textarea1" class="materialize-textarea" ng-model="pro_about"></textarea>
+                        </div>
+                    </div>
+                    <div class="card-append">
+                        <div class="input-field col s12 m6">
+                            <input id="school" type="text" class="validate" ng-model="pro_school" disabled> <!-- Assign Model Value -->
+                            <label for="school" class="active" disabled>School</label>  <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input id="major" type="text" class="validate valid" ng-model="pro_major"> <!-- Assign Model Value -->
+                            <label for="major" class="active">Major</label> <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <input id="location" type="text" class="validate" ng-model="pro_loc" disabled> <!-- Assign Model Value -->
+                            <label for="location" class="active">Location</label> <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                        </div>
+                        <!-- <div class="col s12 m6"><p><b>Language: </b></p></div>-->
+                        <div class="input-field col s12 m6">
+                            <!--<p><b>Preferred Email: </b>{{ usrprofile.get("prefEmail") }}</p>-->
+                            <input id="pref_email" type="text" class="validate valid" ng-model="pro_email"> <!-- Assign Model Value -->
+                            <label for="pref_email" class="active">Preferred Email</label> <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="col s12 m6">
+                <div class="card grey lighten-4">
+                    <div class="card-content">
+                        <span class="card-title">Availability</span>
+                        <!--
+                        <table class="avail"><tbody>
+                            <tr>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="Morning, Afternoon, Evening">S</td>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="None">M</td>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt " data-position="bottom" data-tooltip="Afternoon">T</td>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="Afternoon, Evening">W</td>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="None">T</td>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="Afternoon">F</td>
+                                <td ng-class="(usrprofile.get('availability')[0] != '0') ? 'available' : 'navailable'" class="tt" data-position="bottom" data-tooltip="None">S</td>
+                            </tr>
+                        </tbody></table> -->
+                        <select ng-change="updt_dayView()" ng-model="availability" ng-init="availability = 'Sunday'"> <!-- Day Selection Edit -->
+                            <option selected>Sunday</option>
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                            <option>Wednesday</option>
+                            <option>Thursday</option>
+                            <option>Friday</option>
+                            <option>Saturday</option>
+                        </select> <!-- End Day Selection Edit -->
+                        <p>
+                            <input ng-model="morning" type="checkbox" id="morning" ng-click="uptd_checkData()"/>
+                            <label for="morning">Morning</label>
+                        </p>
+                        <p>
+                            <input ng-model="aftrn" type="checkbox" id="afternoon" ng-click="uptd_checkData()" />
+                            <label for="afternoon">Afternoon</label>
+                        </p>
+                        <p>
+                            <input ng-model="night" type="checkbox" id="night" ng-click="uptd_checkData()" />
+                            <label for="night">Night</label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course List -->
+            <div class="col s12 m6">
+                 <div class="card grey lighten-4">
+                    <div class="card-content">
+                        <div class="">
+                            <span class="card-title">Courses</span>   <a href="" class="blue-text" ng-click="gotoEdit()">Edit</a>
+                            <ul id="courses" class="collection">
+                                <li class='collection-item' ng-show="usrprofile.get('courseList').length == 0">You currently are not signed up for any courses!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End Course List -->
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.tt').tooltip({"delay": 25});
+        $('select').material_select();
+    });
+</script>
