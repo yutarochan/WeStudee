@@ -1,0 +1,124 @@
+<div ng-include="'partials/navbar.html'"></div>
+
+<!-- Profile Contents -->
+<div class="container">
+
+    <div class="db_header" style="padding-bottom: 10px">
+        <div class="col l12 m12">
+            <div class="title">Profile Setup</div>
+            <p>To get improve the chances of getting a better study partner, let's start out by building your profile.</p>
+            <p class="cardform-error"></p>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Profile Card -->
+        <div class="col s12 m12">
+            <div class="card grey lighten-4">
+                <div class="card-content">
+                    <div class="row"><div class="col s12 m12"><span class="card-title black-text">Profile</span></div></div>
+
+                    <div class="">
+                        <label for="textarea1">About</label>
+                        <textarea id="textarea1" class="materialize-textarea" ng-model="pro_about"></textarea>
+                    </div>
+                </div>
+                <div class="card-append">
+                    <div class="input-field col s12 m6">
+                        <input id="school" type="text" class="" ng-model="pro_school" disabled>
+                        <!-- Assign Model Value -->
+                        <label for="school" class="active" disabled>School</label>
+                        <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input id="major" type="text" class="" ng-model="pro_major">
+                        <!-- Assign Model Value -->
+                        <label for="major" class="active">Major</label>
+                        <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                    </div>
+
+                    <div class="input-field col s12 m6">
+                        <input id="location" type="text" class="" ng-model="pro_loc">
+                        <!-- Assign Model Value -->
+                        <label for="location" class="active">Location</label>
+                        <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                    </div>
+                    <!-- <div class="col s12 m6"><p><b>Language: </b></p></div>-->
+                    <div class="input-field col s12 m6">
+                        <!--<p><b>Preferred Email: </b>{{ usrprofile.get("prefEmail") }}</p>-->
+                        <input id="pref_email" type="text" class="" ng-model="pro_email">
+                        <!-- Assign Model Value -->
+                        <label for="pref_email" class="active">Preferred Email</label>
+                        <!-- TODO: Change the active depending on if there are any content in the profile. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="col s12 m12">
+            <div class="card grey lighten-4">
+                <div class="card-content">
+                    <div class="row"><div class="col s12 m12"><span class="card-title black-text">Availability</span></div></div>
+                    <div class="col s12 m6">
+                        <select ng-change="updt_dayView()" ng-model="availability" ng-init="availability = 'Sunday'">
+                            <!-- Day Selection Edit -->
+                            <option selected>Sunday</option>
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                            <option>Wednesday</option>
+                            <option>Thursday</option>
+                            <option>Friday</option>
+                            <option>Saturday</option>
+                        </select>
+                        <!-- End Day Selection Edit -->
+                    </div>
+                    <div class="col s12 m6">
+                    <p>
+                        <input ng-model="morning" type="checkbox" id="morning" ng-click="uptd_checkData()" />
+                        <label for="morning">Morning</label>
+                    </p>
+                    <p>
+                        <input ng-model="aftrn" type="checkbox" id="afternoon" ng-click="uptd_checkData()" />
+                        <label for="afternoon">Afternoon</label>
+                    </p>
+                    <p>
+                        <input ng-model="night" type="checkbox" id="night" ng-click="uptd_checkData()" />
+                        <label for="night">Night</label>
+                    </p>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div class="card grey lighten-4">
+            <div class="card-content">
+                <div class="row"><div class="col s12 m12"><span class="card-title black-text">Courses</span></div></div>
+                <div class="row">
+                    <!--<div class="col m12 s12" ng-show="!checkMobile()">-->
+                    <div class="col m12 s12">
+                        <label>Courses</label>
+                        <select id="sub" ng-model="dp_sub" ng-click="checkDropdown()" ng-change="checkDropdown()">
+                            <option value="" disabled selected>Select a subject</option>
+                        </select>
+                    </div>
+                    <div class="col m12 s12">
+                        <ul id="cour" class="collection with-header">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m12 m12 right-align">
+            <br>
+            <button class="btn waves-effect waves-light" type="submit" name="action" ng-click="processForm()">Submit
+                <i class="mdi-content-send right-align"></i>
+            </button>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                $('select').material_select();
+            });
+        </script>
+    </div>

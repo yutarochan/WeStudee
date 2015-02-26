@@ -30,6 +30,7 @@ app.config(['$routeProvider', function($routeProvider) {
     .when("/logout", { templateUrl: "partials/logout.html" })
     .when("/profile", { templateUrl: "partials/profile.html", controller: "ProfileCtrl" })
     .when("/profile_edit", { templateUrl: "partials/profile_edit.html", controller: "ProfileEditCtrl" })
+    .when("/profile_setup", { templateUrl: "partials/profile_setup.html", controller: "ProfileSetupCtrl" })
     .when("/courses", { templateUrl: "partials/courses.html", controller: "CourseCtrl" })
     .otherwise("/404", { redirect: "/dashboard" });
 
@@ -38,8 +39,7 @@ app.config(['$routeProvider', function($routeProvider) {
 
 
 // Redirect Routing
-if (!Parse.User.current()) location.href= '?#/login';
-else {
+if (Parse.User.current()) {
     // Check User Activation
     if(Parse.User.current().get("emailVerified") === false) console.log(Parse.User.current().get("emailVerified")); //location.href= '?#/reconfirm';
     else {
@@ -47,7 +47,16 @@ else {
         var UserProfile = Parse.Object.extend("UserProfile");
         var query = new Parse.Query(UserProfile);
         query.equalTo("userID", Parse.User.current());
-        query.count({ success: function(c) { if (c.length === 0) { console.log("User has no profile --> redirect!") } else { console.log("has profile")} } });
+        query.count({ success: function(c) {
+            var usr_prof = c[0];
+            if (usr_prof.get("about") === undefined &&
+                usr_prof.get("major") === undefined &&
+                usr_prof.get("prefEmail") === undefined &&
+                usr_prof.get("availability") === undefined &&
+                usr_prof.get("courseList") === undefined)
+                console.log("no profile!");
+            }
+        });
     }
 }
 
@@ -241,7 +250,7 @@ app.controller('DashboardCtrl', function($scope) {
     query.limit(1);
     query.equalTo("userID", $scope.user);
     query.first().then(function(result){
-        if (result) {
+        if (result.length > 0) {
             $scope.userprofile = result;
             // Query Course Data
             for (var i = 0; i < result.get("courseList").length; i++) {
@@ -386,7 +395,23 @@ app.controller('CreateAccountCtrl', function($scope) {
 
 			user.signUp(null, {
             	success: function(user) {
-                	location.href='?#/signup_success';
+                    // Parse Email to check if listed school - TODO: Implement a feature to limit the schools.
+                    var email_stub = $scope.email.substr(($scope.email.indexOf("@")+1));
+                    var email_query = new Parse.Query("School");
+                    email_query.equalTo("email_format", email_stub);
+                    email_query.find({
+                        success: function(data) {
+                            var UserProfile = Parse.Object.extend("UserProfile");
+                            var usr_prof = new UserProfile();
+                            usr_prof.set("userID", user);
+
+                            if (data.length != 0) usr_prof.set("schoolID", data[0]);
+
+                            usr_prof.save();
+                            location.href='?#/signup_success';
+                        },
+                        error: function(error) {}
+                    });
 				},
                 error: function(user, error) {
                 	// Show the error message somewhere and let the user try again.
@@ -425,6 +450,156 @@ app.controller('ForgotCtrl', function($scope) {
 		}
 	};
 });
+
+
+app.controller('ProfileSetupCtrl', function($scope) {
+    $scope.user = Parse.User.current();
+
+    // Preload Initial Form Data
+    var query = new Parse.Query("UserProfile");
+    query.limit(1);
+    query.equalTo("userID", $scope.user);
+    query.first().then(function(result){
+        if (result) {
+            $scope.usrprofile = result;
+
+            // Query User School Information
+            var qur = new Parse.Query("School");
+            qur.limit(1);
+            qur.first().then(function(res) {
+                $scope.usrprofile_school = res;
+
+                // Prepopulate form with more data.
+                $scope.pro_school = res.get("schoolName");
+                $scope.pro_loc = res.get('city') + ", " + res.get('state');
+            });
+
+            // Query Subject Data
+            var query_subject = new Parse.Query("Subjects");
+            query_subject.equalTo("schoolID", result.get("schoolID"));
+            query_subject.ascending("subjectName");
+            query_subject.find(function(data) {
+                $scope.subjects = data;
+
+                for (var i = 0; i < data.length; i++) {
+                    // TODO: Make use of Parse's objectID instead of actually using the subjectID.
+                    if (!isMobile()) $('#sub').append($("<option></option>").prop('value', data[i].get("subjectID")).text(data[i].get("subjectName")));
+                    else $('#subj').append();
+                }
+                $("select").material_select();
+            });
+        }
+    });
+
+    // Availability Management Functions
+    $scope.avail = "0000000";
+
+    function dayToIndex(day) {
+        switch (day) {
+            case "Sunday": return 0;
+            case "Monday": return 1;
+            case "Tuesday": return 2;
+            case "Wednesday": return 3;
+            case "Thursday": return 4;
+            case "Friday": return 5;
+            case "Saturday": return 6;
+        }
+    };
+
+    function setCheckbox(data) {
+        if (data == 0) {
+            $("#morning").prop('checked', false);
+            $("#afternoon").prop('checked', false);
+            $("#night").prop('checked', false);
+        } else if (data == 1) {
+            $("#morning").prop('checked', true);
+            $("#afternoon").prop('checked', false);
+            $("#night").prop('checked', false);
+        } else if (data == 2) {
+            $("#morning").prop('checked', false);
+            $("#afternoon").prop('checked', true);
+            $("#night").prop('checked', false);
+        } else if (data == 3) {
+            $("#morning").prop('checked', false);
+            $("#afternoon").prop('checked', false);
+            $("#night").prop('checked', true);
+        } else if (data == 4) {
+            $("#morning").prop('checked', true);
+            $("#afternoon").prop('checked', true);
+            $("#night").prop('checked', false);
+        } else if (data == 5) {
+            $("#morning").prop('checked', false);
+            $("#afternoon").prop('checked', true);
+            $("#night").prop('checked', true);
+        } else if (data == 6) {
+            $("#morning").prop('checked', true);
+            $("#afternoon").prop('checked', false);
+            $("#night").prop('checked', true);
+        } else if (data == 7) {
+            $("#morning").prop('checked', true);
+            $("#afternoon").prop('checked', true);
+            $("#night").prop('checked', true);
+        }
+    };
+
+    $scope.updt_dayView = function() {
+        var day_idx = dayToIndex($scope.availability);
+        setCheckbox($scope.avail[day_idx]);
+    };
+
+    $scope.uptd_checkData = function() {
+        var day_idx = dayToIndex($scope.availability);
+        $scope.avail = repAt($scope.avail, day_idx, setCBString());
+    };
+
+    function repAt(data, index, char) {
+        var new_data = "";
+        for (var i = 0; i < data.length; i++) {
+            if (i == index) new_data += char;
+            else new_data += data[i];
+        }
+        return new_data;
+    };
+
+    function setCBString() {
+        if ($("#morning").is(":checked")) {
+            if ($("#afternoon").is(":checked")) {
+                if ($("#night").is(":checked")) return 7;
+                else return 4;
+            } else {
+                if ($("#night").is(":checked")) return 5;
+                else return 1;
+            }
+        } else {
+            if ($("#afternoon").is(":checked")) {
+                if ($("#night").is(":checked")) return 6;
+                else return 2;
+            } else {
+                if ($("#night").is(":checked")) return 3;
+                else return 0;
+            }
+        }
+    };
+
+    // Course Management Functions
+
+
+    // Form Submission Function
+    $scope.processForm = function() {
+        if ($scope.pro_about !== undefined &&
+            $scope.pro_major !== undefined &&
+            $scope.pro_loc !== undefined &&
+            $scope.pro_email !== undefined) {
+
+            console.log("Processing form!");
+
+        } else {
+            window.scrollTo(0, 0);
+            $('.cardform-error').text("Error: Please do not leave any of the fields blank.")
+        }
+    };
+});
+
 
 app.controller('ProfileCtrl', function($scope) {
 	$scope.user = Parse.User.current();
