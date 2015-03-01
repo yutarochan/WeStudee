@@ -1,5 +1,5 @@
 /*
-    For now...
+    For now..., just a personal reminder to:
       ___   _   _    ___    _  __             ___    _____             ___    _  _     ___      ___             ___    _____     _
      | __| | | | |  / __|  | |/ /     o O O  |_ _|  |_   _|    o O O  / __|  | || |   |_ _|    | _ \    o O O  |_ _|  |_   _|   | |
      | _|  | |_| | | (__   | ' <     o        | |     | |     o       \__ \  | __ |    | |     |  _/   o        | |     | |     |_|
@@ -30,13 +30,14 @@ app.config(['$routeProvider', function($routeProvider) {
     .when("/logout", { templateUrl: "partials/logout.html" })
     .when("/profile", { templateUrl: "partials/profile.html", controller: "ProfileCtrl" })
     .when("/profile_edit", { templateUrl: "partials/profile_edit.html", controller: "ProfileEditCtrl" })
+    .when("/profile_view", { templateUrl: "partials/profile_view.html", controller: "ProfileViewCtrl" })
     .when("/profile_setup", { templateUrl: "partials/profile_setup.html", controller: "ProfileSetupCtrl" })
     .when("/courses", { templateUrl: "partials/courses.html", controller: "CourseCtrl" })
-    .otherwise("/404", { redirect: "/dashboard" });
+    .when("/courses_setup", { templateUrl: "partials/courses_setup.html", controller: "CourseCtrl" })
+    .otherwise({ redirect: "/" });
 
-    if (!Parse.User.current()) location.href= '?#/login';
+    if (!Parse.User.current() && document.URL.indexOf("reset") == -1) location.href= '?#/login';
 }]);
-
 
 // Redirect Routing
 if (Parse.User.current()) {
@@ -45,18 +46,19 @@ if (Parse.User.current()) {
     else {
         // Check Profile Established
         var UserProfile = Parse.Object.extend("UserProfile");
-        var query = new Parse.Query(UserProfile);
+        var query = new Parse.Query("UserProfile");
         query.equalTo("userID", Parse.User.current());
-        query.count({ success: function(c) {
+        query.find({ success: function(c) {
             var usr_prof = c[0];
             if (usr_prof.get("about") === undefined &&
                 usr_prof.get("major") === undefined &&
                 usr_prof.get("prefEmail") === undefined &&
                 usr_prof.get("availability") === undefined &&
-                usr_prof.get("courseList") === undefined)
-                console.log("no profile!");
+                usr_prof.get("courseList") === undefined &&
+                document.URL.indexOf("profile_setup") == -1) {
+                    goto("profile_setup");
             }
-        });
+        }});
     }
 }
 
@@ -65,7 +67,7 @@ app.controller('PageCtrl', function (/* $scope, $location, $http) {
     console.log("Page Controller activated!");
 }); */
 
-var base_url = "ws/app/";
+var base_url = "WeStudee/app/";
 
 // Application View Changer
 function goto(path) {
@@ -248,19 +250,18 @@ app.controller('DashboardCtrl', function($scope) {
     // Query User Profile Information
     var query = new Parse.Query("UserProfile");
     query.limit(1);
-    query.equalTo("userID", $scope.user);
+    query.equalTo("userID", Parse.User.current());
     query.first().then(function(result){
-        if (result.length > 0) {
-            $scope.userprofile = result;
-            // Query Course Data
-            for (var i = 0; i < result.get("courseList").length; i++) {
-                var query_course = new Parse.Query("Courses");
-                query_course.get(result.get("courseList")[i], {
-                    success: function(object) {
+        $scope.userprofile = result;
+        // Query Course Data
+        for (var i = 0; i < result.get("courseList").length; i++) {
+            var query_course = new Parse.Query("Courses");
+            query_course.get(result.get("courseList")[i], {
+                success: function(object) {
                         //$("#courses").append("<li class='collection-item'><strong>"+object.get("courseName")+"</strong> ("+object.get("subjectID")+" "+object.get("courseID")+")</li>");
                         $("#course_list").append(
                             "<li>"+
-                                "<div class='collapsible-header white-text red lighten-2'>"+object.get("courseName")+"</div>"+
+                                "<div class='collapsible-header white-text blue lighten-1'>"+object.get("courseName")+"</div>"+
                                 "<div class='collapsible-body grey lighten-3'>"+
                                     "<div id='"+object.id+"' class='row' style='padding: 0 24px;'>"+
                                     "</div>"+
@@ -292,7 +293,7 @@ app.controller('DashboardCtrl', function($scope) {
                                                                 "<div class='col l3 m12'><div class='card'>"+
                                                                     "<div class='card-image waves-effect waves-block waves-light'><img class='activator' src='img/app/profile_cover.png'></div>"+
                                                                         "<div class='card-content'>"+
-                                                                            "<span class='card-title activator'><a class='blue-text' href='#'>"+obj.get("first_name") + " " + obj.get("last_name")+"</a><i class='mdi-navigation-more-vert right grey-text text-darken-4'></i></span>"+
+                                                                            "<span class='card-title activator'><a class='blue-text' href='?#/profile_view?id="+obj.id+"' onClick='goto(\"profile_view?id="+obj.id+"\")'>"+obj.get("first_name") + " " + obj.get("last_name")+"</a><i class='mdi-navigation-more-vert right grey-text text-darken-4'></i></span>"+
                                                                             "<span class='votes'>0 VOTES</span>"+
                                                                         "</div>"+
                                                                         "<div class='card-reveal card_detail'>"+
@@ -324,10 +325,10 @@ app.controller('DashboardCtrl', function($scope) {
                                 }
                             }
                         });
-                    },
-                    error: function(object, error) {}});
-            }
-        } else console.log("no profile");
+                },
+                error: function(object, error) { console.log("error!!!!"); }
+            });
+        }
     });
 
     $scope.getTooltip = function(data) {
@@ -473,21 +474,6 @@ app.controller('ProfileSetupCtrl', function($scope) {
                 $scope.pro_school = res.get("schoolName");
                 $scope.pro_loc = res.get('city') + ", " + res.get('state');
             });
-
-            // Query Subject Data
-            var query_subject = new Parse.Query("Subjects");
-            query_subject.equalTo("schoolID", result.get("schoolID"));
-            query_subject.ascending("subjectName");
-            query_subject.find(function(data) {
-                $scope.subjects = data;
-
-                for (var i = 0; i < data.length; i++) {
-                    // TODO: Make use of Parse's objectID instead of actually using the subjectID.
-                    if (!isMobile()) $('#sub').append($("<option></option>").prop('value', data[i].get("subjectID")).text(data[i].get("subjectName")));
-                    else $('#subj').append();
-                }
-                $("select").material_select();
-            });
         }
     });
 
@@ -581,9 +567,6 @@ app.controller('ProfileSetupCtrl', function($scope) {
         }
     };
 
-    // Course Management Functions
-
-
     // Form Submission Function
     $scope.processForm = function() {
         if ($scope.pro_about !== undefined &&
@@ -593,6 +576,21 @@ app.controller('ProfileSetupCtrl', function($scope) {
 
             console.log("Processing form!");
 
+            var query_prof = new Parse.Query("UserProfile");
+            query_prof.equalTo("userID", Parse.User.current());
+            query_prof.first().then(function(user) {
+
+                console.log(user.length);
+                user.set("about", $scope.pro_about);
+                user.set("major", $scope.pro_major);
+                user.set("location", $scope.pro_location);
+                user.set("prefEmail", $scope.pro_email);
+                user.set("availability", $scope.avail);
+                user.addUnique("courseList", "");
+
+                user.save();
+                goto("courses_setup");
+            });
         } else {
             window.scrollTo(0, 0);
             $('.cardform-error').text("Error: Please do not leave any of the fields blank.")
@@ -821,6 +819,63 @@ app.controller('ProfileEditCtrl', function ($scope) {
     };
 });
 
+app.controller('ProfileViewCtrl', function($scope) {
+    if (getQueryVariable('id') == false || getQueryVariable('id') == Parse.User.current()) {
+        goto("/");
+    }
+
+    var query_user = new Parse.Query("User");
+    query_user.get(getQueryVariable('id'), {
+        success: function(object) {
+            $scope.user = object;
+
+            var query = new Parse.Query("UserProfile");
+            query.limit(1);
+            query.equalTo("userID", object);
+            query.first().then(function(result){
+                if (result) {
+                    $scope.usrprofile = result;
+
+                    for (var i = 0; i < result.get("courseList").length; i++) {
+                        var query_course = new Parse.Query("Courses");
+                        query_course.get(result.get("courseList")[i], {
+                            success: function(object) {
+                                $("#courses").append("<li class='collection-item'><strong>"+object.get("courseName")+"</strong> ("+object.get("subjectID")+" "+object.get("courseID")+")</li>");
+                            },
+                            error: function(object, error) {}});
+                    }
+
+                    // Query User School Information
+                    var qur = new Parse.Query("School");
+                    qur.limit(1);
+                    qur.first().then(function(res) { $scope.usrprofile_school = res; });
+                }
+            });
+        }
+    });
+
+    function getCourseName(courseID) {
+        var query = new Parse.Query("Courses");
+        query.equalTo("objectId", courseID);
+        query.first().then(function(result){
+            return courseID;
+        });
+    };
+
+    $scope.getTooltip = function(data) {
+        var text = "";
+        if (data == 0) text = "None";
+        if (data == 1 || data == 4 || data == 5 || data == 7) text += "Morning ";
+        if (data == 2 || data == 4 || data == 6 || data == 7) text += "Afternoon";
+        if (data == 3 || data == 5 || data == 6 || data == 7) text += " Night";
+        return text;
+    };
+
+    $scope.sendRequest = function() {
+        sendRequest($scope.user.id);
+    };
+});
+
 app.controller('CourseCtrl', function ($scope) {
     $scope.user = Parse.User.current();
 
@@ -895,3 +950,15 @@ function containsCourse(course, c) {
         if (course[i] === c) return true;
     return false;
 };
+
+function getQueryVariable(variable){
+    if (window.location.href.split("?")[window.location.search.split("?").length+1] === undefined)
+        return false;
+    var query = window.location.href.split("?")[window.location.search.split("?").length+1];
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}

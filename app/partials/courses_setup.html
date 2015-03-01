@@ -1,0 +1,31 @@
+<div ng-include="'partials/navbar.html'"></div>
+<div class="container course_container">
+
+    <div class="row db_header">
+        <div class="col l8 m12"><div class="title">Course List</div></div>
+        <div class="col l4 m12">
+            <div class="col m12 m12 right-align">
+                <br>
+                <button class="btn waves-effect waves-light" type="submit" name="action" onClick="goto('/')">Complete
+                    <i class="mdi-content-send right-align"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!--<div class="col m12 s12" ng-show="!checkMobile()">-->
+        <div class="col m12 s12">
+            <label>Courses</label>
+            <select id="sub" ng-model="dp_sub" ng-click="checkDropdown()" ng-change="checkDropdown()">
+                <option value="" disabled selected>Select a subject</option>
+            </select>
+        </div>
+        <div class="col m12 s12">
+            <ul id="cour" class="collection with-header">
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- {{ usrprofile_school.get("schoolName") }} -->
